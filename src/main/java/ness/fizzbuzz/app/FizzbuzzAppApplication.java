@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FizzbuzzAppApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(FizzbuzzAppApplication.class, args);
     }
-
 }
