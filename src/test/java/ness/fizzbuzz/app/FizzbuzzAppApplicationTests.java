@@ -39,9 +39,17 @@ class FizzbuzzAppApplicationTests {
     }
 
     @Test
+    public void checkAlfrescoNumber(){
+
+        Assertions.assertEquals("alfresco", fizzBuzzServiceImpl.fizzBuzz(3));
+        Assertions.assertEquals("alfresco", fizzBuzzServiceImpl.fizzBuzz(33));
+        System.out.println("checkAlfrescoNumber");
+    }
+
+    @Test
     public void contextLoads() {
 
-        IntStream.range(1,100)
+        IntStream.range(1,20)
                 .forEach(number -> System.out.println(fizzBuzzServiceImpl.fizzBuzz(number)));
     }
 }
