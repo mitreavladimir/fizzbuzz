@@ -30,6 +30,8 @@ public class FizzBuzzServiceImpl implements FizzBuzzService {
             if(r == 3) {
                 checkNumberThree = true;
                 break;
+            }else{
+                break;
             }
         }
         return checkNumberThree;
