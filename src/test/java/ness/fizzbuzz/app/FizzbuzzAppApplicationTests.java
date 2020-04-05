@@ -1,9 +1,15 @@
 package ness.fizzbuzz.app;
 
-import ness.fizzbuzz.app.service.FizzBuzzServiceImpl;
+import ness.fizzbuzz.app.service.FizzBuzzService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,51 +17,62 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 class FizzbuzzAppApplicationTests {
 
-    FizzBuzzServiceImpl fizzBuzzServiceImpl = new FizzBuzzServiceImpl();
+    @Autowired
+    FizzBuzzService fizzBuzzService;
+
+    @Autowired
+    private MockMvc mockMvc;
+
     @Test
+    @DisplayName("should return numbers")
     public void fizzBuzzTest(){
-        Assertions.assertEquals("1", fizzBuzzServiceImpl.fizzBuzz(1));
-        Assertions.assertEquals("2", fizzBuzzServiceImpl.fizzBuzz(2));
-
-        System.out.println("fizzBuzzTest");
+        Assertions.assertEquals("1", fizzBuzzService.fizzBuzz(1));
+        Assertions.assertEquals("2", fizzBuzzService.fizzBuzz(2));
     }
 
     @Test
+    @DisplayName("should return Fizz")
     public void multiplesOfThree(){
-        Assertions.assertEquals("Fizz", fizzBuzzServiceImpl.fizzBuzz(6));
-        System.out.println("multiplesOfThree");
+        Assertions.assertEquals("Fizz", fizzBuzzService.fizzBuzz(6));
     }
 
     @Test
+    @DisplayName("should return Buzz")
     public void multiplesOfFive(){
-        Assertions.assertEquals("Buzz", fizzBuzzServiceImpl.fizzBuzz(5));
-        System.out.println("multiplesOfFive");
+        Assertions.assertEquals("Buzz", fizzBuzzService.fizzBuzz(5));
     }
 
     @Test
+    @DisplayName("should return FizzBuzz")
     public void multiplesOfThreeAnFive(){
-
-        Assertions.assertEquals("FizzBuzz", fizzBuzzServiceImpl.fizzBuzz(15));
-        System.out.println("multiplesOfThreeAnFive");
+        Assertions.assertEquals("FizzBuzz", fizzBuzzService.fizzBuzz(15));
     }
 
     @Test
+    @DisplayName("should return alfresco")
     public void checkAlfrescoNumber(){
-
-        Assertions.assertEquals("alfresco", fizzBuzzServiceImpl.fizzBuzz(3));
-        Assertions.assertEquals("alfresco", fizzBuzzServiceImpl.fizzBuzz(33));
-        System.out.println("checkAlfrescoNumber");
+        Assertions.assertEquals("alfresco", fizzBuzzService.fizzBuzz(3));
+        Assertions.assertEquals("alfresco", fizzBuzzService.fizzBuzz(33));
     }
 
     @Test
+    @DisplayName("should return a report")
     public void contextLoads() {
         List<Object> result = new ArrayList<>();
 
         IntStream.range(1,21)
-                .forEach(number -> result.add(fizzBuzzServiceImpl.fizzBuzz(number)));
+                .forEach(number -> result.add(fizzBuzzService.fizzBuzz(number)));
 
         System.out.println(result);
 
@@ -82,5 +99,20 @@ class FizzbuzzAppApplicationTests {
         }
 
         System.out.println(report);
+    }
+
+
+    @Test
+    @DisplayName("should return FizzBuzz")
+    public void testRetrieveWithSuccess() throws Exception {
+        this.mockMvc.perform(get("http://localhost:8080/fizzbuzz/testfizbuzz/15")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("FizzBuzz")));
+    }
+
+    @Test
+    @DisplayName("should return bad request status 400")
+    public void testRetrieveWithFail() throws Exception {
+        this.mockMvc.perform(get("http://localhost:8080/fizzbuzz/testfizbuzz/three")).andDo(print()).andExpect(status().isBadRequest())
+                .andExpect(status().is(400));
     }
 }
