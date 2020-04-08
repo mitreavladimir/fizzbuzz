@@ -1,6 +1,7 @@
 $(document).ready(function(){
     $("#get").click(function(){
-        var urlFizzBuzz = 'http://localhost:8080/fizzbuzz/testfizbuzz/'.concat(document.getElementById("number").value);
+        var host = window.origin;
+        var urlFizzBuzz = host.concat('/fizzbuzz/testfizbuzz/').concat(document.getElementById("number").value);
         $.get(urlFizzBuzz, function(data, status){
             console.log(data);
             document.getElementById("response").innerHTML = data;
