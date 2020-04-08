@@ -25,4 +25,9 @@ public class FizzBuzzController {
     public List<Object> getFizzBuzzRange(@PathVariable("r1") Integer r1, @PathVariable("r2") Integer r2) {
         return fizzBuzzService.rangeResource(r1, r2);
     }
+
+    @RequestMapping("/")
+    public String start(){
+        return "index";
+    }
 }
