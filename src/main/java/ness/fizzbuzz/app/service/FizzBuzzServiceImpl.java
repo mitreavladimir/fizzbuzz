@@ -20,16 +20,16 @@ public class FizzBuzzServiceImpl implements FizzBuzzService {
 
     public String fizzBuzz(int number) {
 
+        if(checkNumberThree(number)){
+            return "alfresco";
+        }
+
         if(number%15 == 0){
             return "FizzBuzz";
         }
 
         if(number%5 == 0){
             return "Buzz";
-        }
-
-        if(checkNumberThree(number)){
-            return "alfresco";
         }
 
         if(number%3 == 0){
