@@ -44,7 +44,8 @@ public class FizzBuzzServiceImpl implements FizzBuzzService {
         int r = 0;
         while(n>0){
             r=n%10;
-            if(r == 3) {
+            n=n/10;
+            if(n==3 || r == 3) {
                 checkNumberThree = true;
                 break;
             }else{
